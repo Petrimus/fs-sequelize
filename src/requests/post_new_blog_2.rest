@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-type: application/json
+
+{
+  "title": "I have made yet another blog",
+  "author": "Kissa Kirnauskis",
+  "url": "here.thre.com",
+  "userId": 1
+}
