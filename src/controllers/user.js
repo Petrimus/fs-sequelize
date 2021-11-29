@@ -1,16 +1,15 @@
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
 
-const  { User } = require('../db/models')
-const  { Blog } = require('../db/models')
+const { User } = require('../db/models')
+const { Blog } = require('../db/models')
 const { tokenExtractor } = require('../utils/middleware')
-
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
     include: {
-      model: Blog
-    }
+      model: Blog,
+    },
   })
   res.json(users)
 })
@@ -39,13 +38,11 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.put('/:username', tokenExtractor, async(req, res) => {
-  const user = await User.findByUsername(req.params.username )
+router.put('/:username', tokenExtractor, async (req, res) => {
+  const user = await User.findOne({ where: { username: req.params.username } })
   user.username = req.params.username
   await user.save()
   res.status(204).json(user)
-
 })
-
 
 module.exports = router
