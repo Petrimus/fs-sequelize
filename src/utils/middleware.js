@@ -17,6 +17,10 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'SequelizeDatabaseError') {
     return res.status(500).send({ error: error.message })
+
+  } else if (error.name === 'SequelizeValidationError') {
+    return res.status(500).send({ error: error.message })
+
   } else if (error.name === 'JsonWebTokenError') {
     return res.status(401).json({
       error: 'invalid token',

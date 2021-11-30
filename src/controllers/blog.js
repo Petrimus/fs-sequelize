@@ -1,10 +1,27 @@
 const router = require('express').Router()
+const { Op } = require('sequelize')
 const { Blog } = require('../db/models')
 const { User } = require('../db/models')
 const { blogFinder, tokenExtractor } = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
-  const blogs = await Blog.findAll()
+  const where = {}
+
+  if (req.query.search) {
+    const searchTerm = `%${req.query.search.toLowerCase()}%`
+    where.title = {
+      [Op.iLike]: searchTerm,
+    }
+  }
+
+  const blogs = await Blog.findAll({
+    attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: { exclude: ['passwordhash'] },
+    },
+    where,
+  })
   res.json(blogs)
 })
 
@@ -36,6 +53,5 @@ router.put('/:id', blogFinder, async (req, res) => {
     res.status(404).end()
   }
 })
-
 
 module.exports = router

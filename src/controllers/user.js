@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:username', tokenExtractor, async (req, res) => {
   const user = await User.findOne({ where: { username: req.params.username } })
-  user.username = req.params.username
+  user.username = req.body.username
   await user.save()
   res.status(204).json(user)
 })
