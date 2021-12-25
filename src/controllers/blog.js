@@ -5,12 +5,24 @@ const { User } = require('../db/models')
 const { blogFinder, tokenExtractor } = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
-  const where = {}
+  let where = {}
 
   if (req.query.search) {
     const searchTerm = `%${req.query.search.toLowerCase()}%`
-    where.title = {
-      [Op.iLike]: searchTerm,
+
+    where = {
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: searchTerm,
+          },
+        },
+        {
+          author: {
+            [Op.iLike]: searchTerm,
+          },
+        },
+      ],
     }
   }
 
@@ -21,6 +33,7 @@ router.get('/', async (req, res) => {
       attributes: { exclude: ['passwordhash'] },
     },
     where,
+    order: ['likes', 'ASC']
   })
   res.json(blogs)
 })
