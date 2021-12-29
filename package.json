@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migration:down": "node utils/rollback.js"
   },
   "author": "Petri Palmu",
   "license": "MIT",
@@ -19,7 +20,8 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
-    "sequelize": "^6.8.0"
+    "sequelize": "^6.8.0",
+    "umzug": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^8.1.0",

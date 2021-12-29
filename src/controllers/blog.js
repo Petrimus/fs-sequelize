@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
       attributes: { exclude: ['passwordhash'] },
     },
     where,
-    order: ['likes', 'ASC']
+    order: [['likes', 'DESC']],
   })
   res.json(blogs)
 })
