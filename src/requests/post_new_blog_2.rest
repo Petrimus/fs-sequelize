@@ -1,5 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldHJpbXVzNzZAZ21haWwuY29tIiwiaWQiOjIsImlhdCI6MTY0MTE5MDY3MX0.8bAsmJIKhDaZCHexFe7QU_baPL5k2wXG2tIbPR0l_K4
 
 {
   "title": "I have made yet another blog",

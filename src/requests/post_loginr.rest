@@ -2,6 +2,6 @@ POST http://localhost:3001/api/login
 Content-type: application/json
 
 {
-    "username": "testeri",
-    "password": "testipassu"
+    "username": "petrimus76@gmail.com",
+    "password": "petriPassu1"
 }

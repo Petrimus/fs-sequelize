@@ -1,10 +1,8 @@
-POST http://localhost:3001/api/blogs HTTP/1.1
+POST http://localhost:3001/api/readinglist HTTP/1.1
 Content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBldHJpbXVzNzZAZ21haWwuY29tIiwiaWQiOjIsImlhdCI6MTY0MTE5MDY3MX0.8bAsmJIKhDaZCHexFe7QU_baPL5k2wXG2tIbPR0l_K4
 
 {
-  "title": "Token autentikointi on helppoa",
-  "author": "Petri Palmu",
-  "url": "localhost.mikalie",
-  "userId": 1
+    "userId": 2,
+    "blogId": 1
 }

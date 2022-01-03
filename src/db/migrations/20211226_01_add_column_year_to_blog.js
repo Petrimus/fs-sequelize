@@ -4,6 +4,7 @@ module.exports = {
   up: async (queryInterface) => {
     await queryInterface.addColumn('blogs', 'year', {
       type: DataTypes.INTEGER,
+      allowNull: true,
       validate: {
         customValidator(value) {
           if (value < 1991 && value > new Date().getFullYear()) {

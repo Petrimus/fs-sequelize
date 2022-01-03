@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint",
-    "migration:down": "node utils/rollback.js"
+    "migration:down": "node src/utils/rollback.js"
   },
   "author": "Petri Palmu",
   "license": "MIT",
