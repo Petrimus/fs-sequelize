@@ -1,7 +1,6 @@
 const { tokenExtractor } = require('../utils/middleware')
 const router = require('express').Router()
 const { Readinglist } = require('../db/models')
-// const { Model } = require('sequelize/types')
 
 router.post('/', tokenExtractor, async (req, res) => {
   const { blogId, userId } = req.body
@@ -15,5 +14,19 @@ router.post('/', tokenExtractor, async (req, res) => {
   return res.json(reading)
 })
 
-module.exports = router
+router.put('/:id', tokenExtractor, async (req, res) => {
+  const id = req.params.id
+  const { read } = req.body
 
+  const readinglist = await Readinglist.findByPk(id)
+
+  if (readinglist) {
+    readinglist.read = read
+    await readinglist.save()
+    res.json(readinglist)
+  } else {
+    return res.status(404).end()
+  }
+})
+
+module.exports = router

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
-
+const { Op } = require('sequelize')
 const { User, Blog } = require('../db/models')
 const { tokenExtractor } = require('../utils/middleware')
 
@@ -43,6 +43,9 @@ router.get('/:id', async (req, res) => {
         attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
         through: {
           attributes: ['id', 'read'],
+          where: {
+            read,
+          },
         },
       },
     ],
