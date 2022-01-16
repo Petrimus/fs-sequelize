@@ -29,13 +29,20 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const id = req.params.id
-  const user = await User.findByPk(id, {
+  let read = {
+    [Op.in]: [true, false],
+  }
+
+  if (req.query.read) {
+    read = req.query.read
+  }
+
+  const user = await User.findByPk(req.params.id, {
     attributes: ['name', 'username'],
     include: [
       {
         model: Blog,
-        attributes: { exclude: ['passwordHash'] }
+        attributes: { exclude: ['passwordHash'] },
       },
       {
         model: Blog,
