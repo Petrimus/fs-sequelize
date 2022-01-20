@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt')
 const router = require('express').Router()
 const { Op } = require('sequelize')
 const { User, Blog } = require('../db/models')
@@ -11,21 +10,6 @@ router.get('/', async (req, res) => {
     },
   })
   res.json(users)
-})
-
-router.post('/', async (req, res) => {
-  const body = req.body
-
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-  const user = await User.create({
-    username: body.username,
-    name: body.name,
-    passwordHash,
-  })
-
-  res.json(user)
 })
 
 router.get('/:id', async (req, res) => {

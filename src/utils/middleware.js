@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('../utils/config')
-const Blog = require('../db/models/blog')
+const { SECRET } = require('./config')
+const { Blog } = require('../db/models')
 
 const blogFinder = async (req, res, next) => {
   req.blog = await Blog.findByPk(req.params.id).catch((error) => next(error))
@@ -17,10 +17,8 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'SequelizeDatabaseError') {
     return res.status(500).send({ error: error.message })
-
   } else if (error.name === 'SequelizeValidationError') {
     return res.status(500).send({ error: error.message })
-
   } else if (error.name === 'JsonWebTokenError') {
     return res.status(401).json({
       error: 'invalid token',
@@ -42,4 +40,18 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
-module.exports = { blogFinder, unknownEndpoint, errorHandler, tokenExtractor }
+const isAuth = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (req.user.disabled === true) {
+      req.logout()
+      res.status(401).json({ message: 'You are unauthorized' })
+    }
+    next()
+  } else {
+    res.status(401).json({ message: 'route forbidden' })
+  }
+}
+
+// const isAdmin = (req, res, next) => {}
+
+module.exports = { blogFinder, unknownEndpoint, errorHandler, tokenExtractor, isAuth }

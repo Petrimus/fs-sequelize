@@ -1,11 +1,12 @@
 const router = require('express').Router()
 const { Op } = require('sequelize')
 const { Blog, User } = require('../db/models')
-const { blogFinder, tokenExtractor } = require('../utils/middleware')
+const { blogFinder, tokenExtractor, isAuth } = require('../utils/middleware')
+// const passport = require('../auth/passport')
 
-router.get('/', async (req, res) => {
+router.get('/', isAuth, async (req, res) => {
   let where = {}
-
+  console.log('menikö se tänne asti ollenkaan, saatana')
   if (req.query.search) {
     const searchTerm = `%${req.query.search.toLowerCase()}%`
 
@@ -24,17 +25,20 @@ router.get('/', async (req, res) => {
       ],
     }
   }
-
-  const blogs = await Blog.findAll({
-    attributes: { exclude: ['userId'] },
-    include: {
-      model: User,
-      attributes: { exclude: ['passwordhash'] },
-    },
-    where,
-    order: [['likes', 'DESC']],
-  })
-  res.json(blogs)
+  try {
+    const blogs = await Blog.findAll({
+      attributes: { exclude: ['userId'] },
+      include: {
+        model: User,
+        attributes: { exclude: ['passwordhash'] },
+      },
+      where,
+      order: [['likes', 'DESC']],
+    })
+    res.json(blogs)
+  } catch (err) {
+    console.log('somethign went wrong! ', err)
+  }
 })
 
 router.post('/', tokenExtractor, async (req, res) => {
@@ -49,7 +53,7 @@ router.post('/', tokenExtractor, async (req, res) => {
   return res.json(blog)
 })
 
-router.delete('/:id', tokenExtractor, blogFinder, async (req, res) => {
+router.delete('/:id', blogFinder, async (req, res) => {
   if (req.blog) {
     await req.blog.destroy()
   }

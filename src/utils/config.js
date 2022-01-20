@@ -3,9 +3,11 @@ require('dotenv').config()
 let PORT = process.env.PORT
 let DATABASE_URL = process.env.DATABASE_URL
 let SECRET = process.env.SECRET
+let SALT_ROUNDS = process.env.SALT_ROUNDS
 
 module.exports = {
   DATABASE_URL,
   PORT,
-  SECRET
+  SECRET,
+  SALT_ROUNDS
 }
