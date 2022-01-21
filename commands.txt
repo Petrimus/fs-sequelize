@@ -1,3 +1,0 @@
-heroku run psql -h ec2-23-23-199-57.compute-1.amazonaws.com -p 5432 -U xwsmpxqomhhuqq dq2c5ihjcr8f
-bf11c9da9a094019cbb32bf7bdf279a0c0bf2f89f94cedc01645039424b283ed
-
