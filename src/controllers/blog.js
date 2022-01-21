@@ -1,12 +1,12 @@
 const router = require('express').Router()
 const { Op } = require('sequelize')
 const { Blog, User } = require('../db/models')
-const { blogFinder, tokenExtractor, isAuth } = require('../utils/middleware')
+const { blogFinder, isAuth } = require('../utils/middleware')
 // const passport = require('../auth/passport')
 
 router.get('/', isAuth, async (req, res) => {
   let where = {}
-  console.log('menikö se tänne asti ollenkaan, saatana')
+
   if (req.query.search) {
     const searchTerm = `%${req.query.search.toLowerCase()}%`
 
@@ -41,7 +41,7 @@ router.get('/', isAuth, async (req, res) => {
   }
 })
 
-router.post('/', tokenExtractor, async (req, res) => {
+router.post('/', isAuth, async (req, res) => {
   const body = req.body
 
   if (!body.url || !body.title) {
@@ -53,14 +53,14 @@ router.post('/', tokenExtractor, async (req, res) => {
   return res.json(blog)
 })
 
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', isAuth, blogFinder, async (req, res) => {
   if (req.blog) {
     await req.blog.destroy()
   }
   res.status(204).end()
 })
 
-router.put('/:id', blogFinder, async (req, res) => {
+router.put('/:id', isAuth, blogFinder, async (req, res) => {
   if (req.blog) {
     const blog = req.blog
     blog.likes = req.body.likes

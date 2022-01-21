@@ -1,8 +1,8 @@
-const { tokenExtractor } = require('../utils/middleware')
+const { isAuth } = require('../utils/middleware')
 const router = require('express').Router()
 const { Readinglist } = require('../db/models')
 
-router.post('/', tokenExtractor, async (req, res) => {
+router.post('/', isAuth, async (req, res) => {
   const { blogId, userId } = req.body
   console.log('userId: ', userId)
 
@@ -14,7 +14,7 @@ router.post('/', tokenExtractor, async (req, res) => {
   return res.json(reading)
 })
 
-router.put('/:id', tokenExtractor, async (req, res) => {
+router.put('/:id', isAuth, async (req, res) => {
   const id = req.params.id
   const { read } = req.body
 

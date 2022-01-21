@@ -5,14 +5,9 @@ router.post('/', passport.authenticate('local'), async (req, res) => {
   res.end()
 })
 
-router.delete('/', async (req, res, next) => {
+router.delete('/', async (req, res) => {
   req.logout()
-  req.session.save((err) => {
-    if (err) {
-      return next(err)
-    }
-    res.redirect('/')
-  })
+  res.send({ message: 'logged out' })
 })
 
 module.exports = router

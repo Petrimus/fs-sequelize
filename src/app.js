@@ -5,6 +5,7 @@ const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const { sequelize } = require('./db/connections')
 const passport = require('./auth/passport')
+const morgan = require('morgan')
 const { SECRET } = require('./utils/config')
 const blogsRouter = require('./controllers/blog')
 const userRouter = require('./controllers/user')
@@ -14,34 +15,40 @@ const readinglistRouter = require('./controllers/readinglist')
 const middleware = require('./utils/middleware')
 
 const app = express()
+if (app.get('env') === 'development') {
+  app.use(morgan('dev'))
+} else {
+  app.use(morgan('tiny'))
+}
+
 const sessionStore = new SequelizeStore({
-  db: sequelize
+  db: sequelize,
 })
 
 const sess = {
   secret: SECRET,
   cookie: { maxAge: 3600000 },
   store: sessionStore,
-  saveUninitialized: true,
+  saveUninitialized: false,
   resave: false,
-
 }
 
 /* if (app.get('env') === 'production') {
   app.set('trust proxy', 1)
   sess.cookie.secure = true
-} */
+}
+*/
 
 app.use(session(sess))
 sessionStore.sync()
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log(req.session)
   console.log(req.user)
   next()
-})
+}) */
 
 app.use(cors())
 app.use(express.json())

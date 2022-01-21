@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { Op } = require('sequelize')
 const { User, Blog } = require('../db/models')
-const { tokenExtractor } = require('../utils/middleware')
+const { isAuth } = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
@@ -49,11 +49,16 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.put('/:username', tokenExtractor, async (req, res) => {
+router.put('/:username', isAuth, async (req, res) => {
+  console.log('req.body: ', req.body)
   const user = await User.findOne({ where: { username: req.params.username } })
-  user.username = req.body.username
+  user.username = req.params.username
+  console.log('username: ', user.username)
+
+  user.disabled = req.body.disabled
+
   await user.save()
-  res.status(204).json(user)
+  res.status(201).json(user)
 })
 
 module.exports = router

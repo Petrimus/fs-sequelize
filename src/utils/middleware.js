@@ -3,7 +3,12 @@ const { SECRET } = require('./config')
 const { Blog } = require('../db/models')
 
 const blogFinder = async (req, res, next) => {
-  req.blog = await Blog.findByPk(req.params.id).catch((error) => next(error))
+  const blog = await Blog.findByPk(req.params.id)
+  if (blog) {
+    req.blog = blog
+  } else {
+    return res.status(403)
+  }
 
   next()
 }
@@ -44,7 +49,7 @@ const isAuth = (req, res, next) => {
   if (req.isAuthenticated()) {
     if (req.user.disabled === true) {
       req.logout()
-      res.status(401).json({ message: 'You are unauthorized' })
+      res.status(401).json({ message: 'You are not authorized' })
     }
     next()
   } else {
@@ -54,4 +59,10 @@ const isAuth = (req, res, next) => {
 
 // const isAdmin = (req, res, next) => {}
 
-module.exports = { blogFinder, unknownEndpoint, errorHandler, tokenExtractor, isAuth }
+module.exports = {
+  blogFinder,
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor,
+  isAuth,
+}

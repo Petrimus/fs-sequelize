@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
-// const passport = require('../auth/passport')
 const { SALT_ROUNDS } = require('../utils/config')
-
 
 const { User } = require('../db/models/')
 

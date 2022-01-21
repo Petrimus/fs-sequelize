@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint",
     "migration:down": "node src/utils/rollback.js"
@@ -21,6 +21,7 @@
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "pg": "^8.7.1",

@@ -62,3 +62,7 @@ typings/
 
 # vs rest client requests
 /requests
+
+# own shit
+commands.sql
+commands.txt
